@@ -18,11 +18,14 @@ $env:PATH = "${env:BUILD_PREFIX}/Library/mingw-w64/bin;${env:BUILD_PREFIX}/Libra
 
 $dotnet_version = dotnet --version
 
+# CsWinRTAotOptimizerEnabled is disabled due to a bug in dotnet-sdk.
+# See: https://github.com/dotnet/sdk/issues/44026
 $framework_version = $dotnet_version -replace "^(\d+\.\d+).*", '$1'
 @"
 <Project>
   <PropertyGroup>
     <TargetFrameworks>net$framework_version-windows</TargetFrameworks>
+    <CsWinRTAotOptimizerEnabled>false</CsWinRTAotOptimizerEnabled>
   </PropertyGroup>
 </Project>
 "@ | Set-Content "$SRC_DIR\Directory.Build.targets"
