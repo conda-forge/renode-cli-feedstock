@@ -18,7 +18,11 @@ build:
 
 requirements:
   build:
-    - dotnet >=8.0.302
+    - if: not unix
+      then:
+        - dotnet ==8.0.302
+      else:
+        - dotnet >=8.0.302
     - nuget-license
     - if: unix
       then:
@@ -30,10 +34,18 @@ requirements:
         - m2-findutils
         - m2-sed
   host:
-    - dotnet >=8.0.302
+    - if: not unix
+      then:
+        - dotnet ==8.0.302
+      else:
+        - dotnet >=8.0.302
     - renode-cores ==${{ version }}
   run:
-    - dotnet-runtime >=8.0.6
+    - if: not unix
+      then:
+        - dotnet-runtime ==8.0.6
+      else:
+        - dotnet-runtime >=8.0.6
 
 tests:
   - package_contents:
