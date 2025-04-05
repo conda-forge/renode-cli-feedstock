@@ -33,7 +33,7 @@ requirements:
     - dotnet >=8.0.302
     - renode-cores ==${{ version }}
   run:
-    - dotnet-runtime >= 8.0.302
+    - dotnet-runtime >=8.0.6
 
 tests:
   - package_contents:
