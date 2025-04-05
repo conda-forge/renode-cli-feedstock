@@ -20,7 +20,7 @@ requirements:
   build:
     - if: not unix
       then:
-        - dotnet ==8.0.302
+        - dotnet ==8.0.204
       else:
         - dotnet >=8.0.302
     - nuget-license
@@ -36,14 +36,14 @@ requirements:
   host:
     - if: not unix
       then:
-        - dotnet ==8.0.302
+        - dotnet ==8.0.204
       else:
         - dotnet >=8.0.302
     - renode-cores ==${{ version }}
   run:
     - if: not unix
       then:
-        - dotnet-runtime ==8.0.6
+        - dotnet ==8.0.204
       else:
         - dotnet-runtime >=8.0.6
 
