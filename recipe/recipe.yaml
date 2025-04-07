@@ -30,12 +30,8 @@ requirements:
         - m2-findutils
         - m2-sed
   host:
-    #- dotnet >=8.0.302
     - renode-cores ==${{ version }}
   run:
-    - if: target_platform == "linux-aarch64"
-      then:
-        - icu
     - dotnet-runtime >=8.0.6
 
 tests:
