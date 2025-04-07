@@ -56,11 +56,13 @@ tests:
         - ${{ "Library/" if win }}share/renode-cli/platforms/cpus/cortex-a9.repl
         - ${{ "Library/" if win }}share/renode-cli/tools/sel4_extensions/seL4Extensions.cs
   - script:
-      - renode --help
-      - if: aarch64
+      - if: target_platform == "linux-aarch64"
         then:
-          - export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
-      - LOCAL_TEST_PREFIX=./test-bundle test-bundle/${{ "Library/" if win }}bin/renode-test test-bundle/${{ "Library/" if win }}share/renode-cli/tests/unit-tests
+          - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1 renode --help
+          - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1 LOCAL_TEST_PREFIX=./test-bundle test-bundle/${{ "Library/" if win }}bin/renode-test test-bundle/${{ "Library/" if win }}share/renode-cli/tests/unit-tests
+        else:
+          - renode --help
+          - LOCAL_TEST_PREFIX=./test-bundle test-bundle/${{ "Library/" if win }}bin/renode-test test-bundle/${{ "Library/" if win }}share/renode-cli/tests/unit-tests
     requirements:
       run:
         - robotframework >=6.1
