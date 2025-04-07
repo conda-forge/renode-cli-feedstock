@@ -57,6 +57,9 @@ tests:
         - ${{ "Library/" if win }}share/renode-cli/tools/sel4_extensions/seL4Extensions.cs
   - script:
       - renode --help
+      - if: aarch64
+        then:
+          - export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
       - LOCAL_TEST_PREFIX=./test-bundle test-bundle/${{ "Library/" if win }}bin/renode-test test-bundle/${{ "Library/" if win }}share/renode-cli/tests/unit-tests
     requirements:
       run:
