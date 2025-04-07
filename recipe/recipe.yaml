@@ -32,7 +32,7 @@ requirements:
   host:
     - renode-cores ==${{ version }}
   run:
-    - dotnet-runtime >=8.0.6
+    - dotnet >=8.0.302
 
 tests:
   - package_contents:
