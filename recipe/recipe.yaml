@@ -18,8 +18,8 @@ build:
 
 requirements:
   build:
-    - dotnet >=8.0.302,<9
-    - nuget-license >=3.0,<3.1
+    - dotnet >=9
+    - nuget-license >=3.1
     - if: unix
       then:
         - sed
@@ -32,7 +32,7 @@ requirements:
   host:
     - renode-cores ==${{ version }}
   run:
-    - dotnet >=8.0.302,<9
+    - dotnet >=9
 
 tests:
   - package_contents:
