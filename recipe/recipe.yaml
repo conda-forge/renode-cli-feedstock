@@ -19,7 +19,7 @@ build:
 requirements:
   build:
     - dotnet >=8.0.302,<9
-    - nuget-license
+    - nuget-license >=3.0,<3.1
     - if: unix
       then:
         - sed
