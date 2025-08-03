@@ -1,6 +1,6 @@
 context:
   name: renode-cli
-  version: "1.15.3"
+  version: "1.16.0"
 
 package:
   name: ${{ name|lower }}
@@ -8,12 +8,12 @@ package:
 
 source:
   - url: https://github.com/renode/renode/releases/download/v${{ version }}/renode_${{ version }}_source.tar.xz
-    sha256: 40c50afe8db86a9c63f4a86b93116a6babd43bf241cfaac47b2c0d2cbc2b15a8
+    sha256: dab46e73d07a3b1bf2c1cec2c615a37ab85d734dda448296dcdf39c4f7c9451a
     patches:
       - patches/update-cores.template_NET.csproj.patch
 
 build:
-  number: 2
+  number: 0
   skip: ppc64le
 
 requirements:
@@ -43,8 +43,8 @@ tests:
         - ${{ "Library/" if win }}share/renode-cli/platforms/cpus/cortex-a9.repl
         - ${{ "Library/" if win }}share/renode-cli/tools/sel4_extensions/seL4Extensions.cs
   - script:
-        - renode --help
-        - LOCAL_TEST_PREFIX=./test-bundle test-bundle/${{ "Library/" if win }}bin/renode-test test-bundle/${{ "Library/" if win }}share/renode-cli/tests/unit-tests
+      - renode --help
+      - LOCAL_TEST_PREFIX=./test-bundle test-bundle/${{ "Library/" if win }}bin/renode-test test-bundle/${{ "Library/" if win }}share/renode-cli/tests/unit-tests
     requirements:
       run:
         - robotframework >=6.1
