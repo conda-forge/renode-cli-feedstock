@@ -9,8 +9,6 @@ package:
 source:
   - url: https://github.com/renode/renode/releases/download/v${{ version }}/renode_${{ version }}_source.tar.xz
     sha256: dab46e73d07a3b1bf2c1cec2c615a37ab85d734dda448296dcdf39c4f7c9451a
-    patches:
-      - patches/update-cores.template_NET.csproj.patch
 
 build:
   number: 0
