@@ -34,7 +34,8 @@ Get-ChildItem -Path . -Directory -Filter "obj" -Recurse | Remove-Item -Force -Re
 Get-ChildItem -Path . -Directory -Filter "bin" -Recurse | Remove-Item -Force -Recurse
 Remove-Item -Path "$SRC_DIR/src/Infrastructure/src/Emulator/Cores/translate*.cproj" -Force
 
-(Get-Content $SRC_DIR/src/Infrastructure/src/UI/UI_NET.csproj) -replace "(<\/PropertyGroup>)", "    <UseWPF>true</UseWPF>`n`$1" | Set-Content $SRC_DIR/src/Infrastructure/src/UI/UI_NET.csproj
+# No longer needed?: (Get-Content $SRC_DIR/src/Infrastructure/src/UI/UI_NET.csproj) -replace "(<\/PropertyGroup>)", "    <UseWPF>true</UseWPF>`n`$1" | Set-Content $SRC_DIR/src/Infrastructure/src/UI/UI_NET.csproj
+
 if ($env:PKG_VERSION -eq "1.15.3") {
     (Get-Content $SRC_DIR/Renode_NET.sln) | ForEach-Object {
         $_ -replace '(ReleaseHeadless\|Any CPU\.(ActiveCfg|Build\.0) = )Debug', '$1Release'
