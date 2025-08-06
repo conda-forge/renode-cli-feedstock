@@ -13,16 +13,6 @@ find lib src tests -name "*.csproj" -exec sed -i -E "s/([>;])net6.0([<;])/\1net$
 # Remove obj and bin directories
 find . -name "obj" -o -name "bin" -type d -exec rm -rf {} +
 
-# Fix typo in Renode_NET.sln
-if [[ "${PKG_VERSION}" == "1.15.3" ]]; then
-    sed -i -E 's/ReleaseHeadless\|Any (.+) = Debug/ReleaseHeadless\|Any \1 = Release/' Renode_NET.sln
-    sed -i -E 's/GetBytes\(registers.Read\(offset\)\);/GetBytes((ushort)registers.Read(offset));/' src/Infrastructure/src/Emulator/Peripherals/Peripherals/Sensors/PAC1934.cs
-    sed -i -E 's/"System.Drawing.Common" Version="5.0.2"/"System.Drawing.Common" Version="5.0.3"/' lib/termsharp/TermSharp_NET.csproj lib/termsharp/xwt/Xwt.Gtk/Xwt.Gtk3_NET.csproj
-else
-    echo "Remove these patches from the script after 1.15.3"
-    exit 1
-fi
-
 # Renode computes its version based upon `git rev-parse --short=8 HEAD`
 sed -i -E "s/\`git rev-parse --short=8 HEAD\`/0/" ${SRC_DIR}/tools/building/createAssemblyInfo.sh
 
