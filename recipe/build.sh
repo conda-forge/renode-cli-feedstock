@@ -8,7 +8,7 @@ dotnet_version=$(dotnet --version)
 framework_version=${dotnet_version%.*}
 
 # Patch project files
-find lib src tests -name "*.csproj" -exec sed -i -E "s/([>;])net6.0([<;])/\1net${framework_version}\2/g" {} \;
+find lib src tests -name "*.csproj" -exec sed -i -E "s/([>;])net\d\.0([<;])/\1net${framework_version}\2/g" {} \;
 
 # Remove obj and bin directories
 find . -name "obj" -o -name "bin" -type d -exec rm -rf {} +
@@ -26,6 +26,7 @@ rm -f "${SRC_DIR}/src/Infrastructure/src/Emulator/Cores/translate*.cproj"
 mkdir -p "${SRC_DIR}/output/bin/Release/net${framework_version}"
 cp "${SRC_DIR}/src/Infrastructure/src/Emulator/Cores/${target_platform%%-*}-properties.csproj" "${SRC_DIR}/output/properties.csproj"
 
+dotnet nuget locals all --clear
 dotnet build \
   -p:GUI_DISABLED=true \
   -p:Configuration=ReleaseHeadless \
