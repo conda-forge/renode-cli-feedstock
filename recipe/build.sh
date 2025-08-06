@@ -24,7 +24,7 @@ rm -f "${SRC_DIR}/src/Infrastructure/src/Emulator/Cores/translate*.cproj"
 
 # Build with dotnet
 mkdir -p "${SRC_DIR}/output/bin/Release/net${framework_version}"
-cp "${SRC_DIR}/src/Infrastructure/src/Emulator/Cores/${target_platform%%-*}-properties_NET.csproj" "${SRC_DIR}/output/properties.csproj"
+cp "${SRC_DIR}/src/Infrastructure/src/Emulator/Cores/${target_platform%%-*}-properties.csproj" "${SRC_DIR}/output/properties.csproj"
 
 dotnet build \
   -p:GUI_DISABLED=true \
