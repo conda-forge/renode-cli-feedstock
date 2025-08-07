@@ -36,18 +36,6 @@ Remove-Item -Path "$SRC_DIR/src/Infrastructure/src/Emulator/Cores/translate*.cpr
 
 # No longer needed?: (Get-Content $SRC_DIR/src/Infrastructure/src/UI/UI_NET.csproj) -replace "(<\/PropertyGroup>)", "    <UseWPF>true</UseWPF>`n`$1" | Set-Content $SRC_DIR/src/Infrastructure/src/UI/UI_NET.csproj
 
-if ($env:PKG_VERSION -eq "1.15.3") {
-    (Get-Content $SRC_DIR/Renode_NET.sln) | ForEach-Object {
-        $_ -replace '(ReleaseHeadless\|Any CPU\.(ActiveCfg|Build\.0) = )Debug', '$1Release'
-    } | Set-Content "$SRC_DIR/Renode_NET.sln"
-    (Get-Content $SRC_DIR/src/Infrastructure/src/Emulator/Peripherals/Peripherals/Sensors/PAC1934.cs) -replace "GetBytes\(registers.Read\(offset\)\);", "GetBytes((ushort)registers.Read(offset));" | Set-Content "$SRC_DIR/src/Infrastructure/src/Emulator/Peripherals/Peripherals/Sensors/PAC1934.cs"
-    (Get-Content $SRC_DIR/lib/termsharp/TermSharp_NET.csproj) -replace '"System.Drawing.Common" Version="5.0.2"', '"System.Drawing.Common" Version="5.0.3"' | Set-Content "$SRC_DIR/lib/termsharp/TermSharp_NET.csproj"
-    (Get-Content $SRC_DIR/lib/termsharp/xwt/Xwt.Gtk/Xwt.Gtk3_NET.csproj) -replace '"System.Drawing.Common" Version="5.0.2"', '"System.Drawing.Common" Version="5.0.3"' | Set-Content "$SRC_DIR/lib/termsharp/xwt/Xwt.Gtk/Xwt.Gtk3_NET.csproj"
-} else {
-    Write-Host "Remove these patches from the script after 1.15.3"
-    exit 1
-}
-
 # Renode computes its version based upon `git rev-parse --short=8 HEAD`
 (Get-Content $SRC_DIR/tools/building/createAssemblyInfo.ps1) -replace 'git rev-parse --short=8 HEAD', '"0"' | Set-Content "$SRC_DIR/tools/building/createAssemblyInfo.ps1"
 
