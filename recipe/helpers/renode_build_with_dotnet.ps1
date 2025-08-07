@@ -61,7 +61,7 @@ dotnet-project-licenses --input "$SRC_DIR/src/Renode/Renode_NET.csproj" -d "$SRC
 New-Item -ItemType File -Path "$PREFIX\Library\bin\renode.cmd" -Force
 @"
 @echo off
-call %DOTNET_ROOT%\dotnet exec %CONDA_PREFIX%\Library\libexec\renode-cli\net$framework_version-windows\Renode.dll %*
+call %DOTNET_ROOT%\dotnet exec %CONDA_PREFIX%\Library\libexec\renode-cli\Renode.dll %*
 "@ | Out-File -FilePath "$PREFIX\Library\bin\renode.cmd" -Encoding ascii
 
 # Install tests for post-install testing
