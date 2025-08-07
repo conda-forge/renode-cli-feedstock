@@ -42,7 +42,7 @@ Remove-Item -Path "$SRC_DIR/src/Infrastructure/src/Emulator/Cores/translate*.cpr
 # Prepare, build, and install
 New-Item -ItemType Directory -Path "$SRC_DIR/src/Infrastructure/src/Emulator/Cores/bin/Release/lib", "$SRC_DIR/output/bin/Release/net$framework_version", "$PREFIX/Library/bin", "$PREFIX/Library/libexec/$PKG_NAME", "$PREFIX/Library/share/$PKG_NAME/{scripts,platforms,tools/sel4_extensions}", "$SRC_DIR/license-files" -Force | Out-Null
 Copy-Item -Path "$PREFIX/Library/bin/renode-cores/*" -Destination "$SRC_DIR/src/Infrastructure/src/Emulator/Cores/bin/Release/lib" -Force
-Copy-Item -Path "$SRC_DIR/src/Infrastructure/src/Emulator/Cores/windows-properties_NET.csproj" -Destination "$SRC_DIR/output/properties.csproj" -Force
+Copy-Item -Path "$SRC_DIR/src/Infrastructure/src/Emulator/Cores/windows-properties.csproj" -Destination "$SRC_DIR/output/properties.csproj" -Force
 
 $OUT_BIN_DIR = "$SRC_DIR\output\bin\Release"
 "dotnet" | Out-File -FilePath "$SRC_DIR/output/bin/Release/build_type" -Encoding ascii
