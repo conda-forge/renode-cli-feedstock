@@ -55,7 +55,7 @@ Copy-Item -Path "$SRC_DIR/scripts" -Destination "$PREFIX/Library/share/$PKG_NAME
 Copy-Item -Path "$SRC_DIR/platforms" -Destination "$PREFIX/Library/share/$PKG_NAME/platforms" -Recurse -Force
 Copy-Item -Path "$SRC_DIR/tools/sel4_extensions" -Destination "$PREFIX/Library/share/$PKG_NAME/tools/sel4_extensions" -Recurse -Force
 
-dotnet-project-licenses --input "$SRC_DIR/src/Renode/Renode_NET.csproj" -d "$SRC_DIR/license-files" -f "txt"
+dotnet-project-licenses --input "$SRC_DIR/src/Renode/Renode_NET.csproj" -d "$SRC_DIR/license-files"
 
 # Create renode.cmd
 New-Item -ItemType File -Path "$PREFIX\Library\bin\renode.cmd" -Force
