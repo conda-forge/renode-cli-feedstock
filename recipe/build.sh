@@ -8,7 +8,7 @@ dotnet_version=$(dotnet --version)
 framework_version=${dotnet_version%.*}
 
 # Patch project files
-find lib src tests -name "*.csproj" -exec sed -i -E "s/([>;])net\d\.0([<;])/\1net${framework_version}\2/g" {} \;
+find lib src tests -name "*.csproj" -exec sed -i -E "s/([>;])net6.0([<;])/\1net${framework_version}\2/g" {} \;
 
 # Remove obj and bin directories
 find . -name "obj" -o -name "bin" -type d -exec rm -rf {} +
@@ -26,7 +26,9 @@ rm -f "${SRC_DIR}/src/Infrastructure/src/Emulator/Cores/translate*.cproj"
 mkdir -p "${SRC_DIR}/output/bin/Release/net${framework_version}"
 cp "${SRC_DIR}/src/Infrastructure/src/Emulator/Cores/${target_platform%%-*}-properties.csproj" "${SRC_DIR}/output/properties.csproj"
 
-dotnet nuget locals all --clear
+# package Microsoft.AspNetCore.App.Ref not found
+sed -i -E "s#(  </packageSources>)#  <add key=\"nuget.org\" value=\"https://api.nuget.org/v3/index.json\" />\n\1#" ${SRC_DIR}/NuGet.Config
+
 dotnet build \
   -p:GUI_DISABLED=true \
   -p:Configuration=ReleaseHeadless \
@@ -42,7 +44,7 @@ cp "lib/resources/llvm/$LLVM_LIB$SHLIB_EXT" "${SRC_DIR}/output/bin/Release/libll
 # Install procedure
 mkdir -p ${PREFIX}/bin ${PREFIX}/libexec/${PKG_NAME} ${PREFIX}/share/${PKG_NAME}/{scripts,platforms,tools/sel4_extensions} ${SRC_DIR}/license-files
 
-cp -r ${SRC_DIR}/output/bin/Release/net${framework_version}/* ${PREFIX}/libexec/${PKG_NAME}/
+cp -r ${SRC_DIR}/output/bin/Release/* ${PREFIX}/libexec/${PKG_NAME}/
 cp -r ${SRC_DIR}/scripts/* "${PREFIX}/share/${PKG_NAME}/scripts/"
 cp -r ${SRC_DIR}/platforms/* "${PREFIX}/share/${PKG_NAME}/platforms/"
 cp -r ${SRC_DIR}/tools/sel4_extensions "${PREFIX}/share/${PKG_NAME}/tools/"
