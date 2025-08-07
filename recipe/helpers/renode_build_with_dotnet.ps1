@@ -34,7 +34,7 @@ Get-ChildItem -Path . -Directory -Filter "obj" -Recurse | Remove-Item -Force -Re
 Get-ChildItem -Path . -Directory -Filter "bin" -Recurse | Remove-Item -Force -Recurse
 Remove-Item -Path "$SRC_DIR/src/Infrastructure/src/Emulator/Cores/translate*.cproj" -Force
 
-(Get-Content $SRC_DIR/src/Infrastructure/src/Infrastructure_NET.csproj) -replace " Condition=\" $\(OS\) == \'Windows_NT\' And $\(GUI_DISABLED\) != 'true' \"", "" | Set-Content $SRC_DIR/src/Infrastructure/src/Infrastructure_NET.csproj
+(Get-Content $SRC_DIR/src/Infrastructure/src/Infrastructure_NET.csproj) -replace "UseWPF Condition=`".*?`"", "UseWPF" | Set-Content $SRC_DIR/src/Infrastructure/src/Infrastructure_NET.csproj
 
 # Renode computes its version based upon `git rev-parse --short=8 HEAD`
 (Get-Content $SRC_DIR/tools/building/createAssemblyInfo.ps1) -replace 'git rev-parse --short=8 HEAD', '"0"' | Set-Content "$SRC_DIR/tools/building/createAssemblyInfo.ps1"
