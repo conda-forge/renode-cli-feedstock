@@ -34,18 +34,7 @@ Get-ChildItem -Path . -Directory -Filter "obj" -Recurse | Remove-Item -Force -Re
 Get-ChildItem -Path . -Directory -Filter "bin" -Recurse | Remove-Item -Force -Recurse
 Remove-Item -Path "$SRC_DIR/src/Infrastructure/src/Emulator/Cores/translate*.cproj" -Force
 
-(Get-Content $SRC_DIR/src/Infrastructure/src/UI/UI_NET.csproj) -replace "(<\/PropertyGroup>)", "    <UseWPF>true</UseWPF>`n`$1" | Set-Content $SRC_DIR/src/Infrastructure/src/UI/UI_NET.csproj
-if ($env:PKG_VERSION -eq "1.15.3") {
-    (Get-Content $SRC_DIR/Renode_NET.sln) | ForEach-Object {
-        $_ -replace '(ReleaseHeadless\|Any CPU\.(ActiveCfg|Build\.0) = )Debug', '$1Release'
-    } | Set-Content "$SRC_DIR/Renode_NET.sln"
-    (Get-Content $SRC_DIR/src/Infrastructure/src/Emulator/Peripherals/Peripherals/Sensors/PAC1934.cs) -replace "GetBytes\(registers.Read\(offset\)\);", "GetBytes((ushort)registers.Read(offset));" | Set-Content "$SRC_DIR/src/Infrastructure/src/Emulator/Peripherals/Peripherals/Sensors/PAC1934.cs"
-    (Get-Content $SRC_DIR/lib/termsharp/TermSharp_NET.csproj) -replace '"System.Drawing.Common" Version="5.0.2"', '"System.Drawing.Common" Version="5.0.3"' | Set-Content "$SRC_DIR/lib/termsharp/TermSharp_NET.csproj"
-    (Get-Content $SRC_DIR/lib/termsharp/xwt/Xwt.Gtk/Xwt.Gtk3_NET.csproj) -replace '"System.Drawing.Common" Version="5.0.2"', '"System.Drawing.Common" Version="5.0.3"' | Set-Content "$SRC_DIR/lib/termsharp/xwt/Xwt.Gtk/Xwt.Gtk3_NET.csproj"
-} else {
-    Write-Host "Remove these patches from the script after 1.15.3"
-    exit 1
-}
+(Get-Content $SRC_DIR/src/Infrastructure/src/Infrastructure_NET.csproj) -replace "UseWPF Condition=`".*?`"", "UseWPF" | Set-Content $SRC_DIR/src/Infrastructure/src/Infrastructure_NET.csproj
 
 # Renode computes its version based upon `git rev-parse --short=8 HEAD`
 (Get-Content $SRC_DIR/tools/building/createAssemblyInfo.ps1) -replace 'git rev-parse --short=8 HEAD', '"0"' | Set-Content "$SRC_DIR/tools/building/createAssemblyInfo.ps1"
@@ -53,7 +42,7 @@ if ($env:PKG_VERSION -eq "1.15.3") {
 # Prepare, build, and install
 New-Item -ItemType Directory -Path "$SRC_DIR/src/Infrastructure/src/Emulator/Cores/bin/Release/lib", "$SRC_DIR/output/bin/Release/net$framework_version", "$PREFIX/Library/bin", "$PREFIX/Library/libexec/$PKG_NAME", "$PREFIX/Library/share/$PKG_NAME/{scripts,platforms,tools/sel4_extensions}", "$SRC_DIR/license-files" -Force | Out-Null
 Copy-Item -Path "$PREFIX/Library/bin/renode-cores/*" -Destination "$SRC_DIR/src/Infrastructure/src/Emulator/Cores/bin/Release/lib" -Force
-Copy-Item -Path "$SRC_DIR/src/Infrastructure/src/Emulator/Cores/windows-properties_NET.csproj" -Destination "$SRC_DIR/output/properties.csproj" -Force
+Copy-Item -Path "$SRC_DIR/src/Infrastructure/src/Emulator/Cores/windows-properties.csproj" -Destination "$SRC_DIR/output/properties.csproj" -Force
 
 $OUT_BIN_DIR = "$SRC_DIR\output\bin\Release"
 "dotnet" | Out-File -FilePath "$SRC_DIR/output/bin/Release/build_type" -Encoding ascii
@@ -61,18 +50,18 @@ dotnet build -p:GUI_DISABLED=true -p:Configuration=ReleaseHeadless -p:GenerateFu
 
 Copy-Item "$SRC_DIR/lib/resources/llvm/libllvm-disas.dll" "$SRC_DIR/output/bin/Release/" -Force
 
-Copy-Item -Path "$SRC_DIR/output/bin/Release/net$framework_version-windows" -Destination "$PREFIX/Library/libexec/$PKG_NAME/" -Recurse -Force
+Copy-Item -Path "$SRC_DIR/output/bin/Release" -Destination "$PREFIX/Library/libexec/$PKG_NAME/" -Recurse -Force
 Copy-Item -Path "$SRC_DIR/scripts" -Destination "$PREFIX/Library/share/$PKG_NAME/scripts" -Recurse -Force
 Copy-Item -Path "$SRC_DIR/platforms" -Destination "$PREFIX/Library/share/$PKG_NAME/platforms" -Recurse -Force
 Copy-Item -Path "$SRC_DIR/tools/sel4_extensions" -Destination "$PREFIX/Library/share/$PKG_NAME/tools/sel4_extensions" -Recurse -Force
 
-dotnet-project-licenses --input "$SRC_DIR/src/Renode/Renode_NET.csproj" -d "$SRC_DIR/license-files" -f "txt"
+dotnet-project-licenses --input "$SRC_DIR/src/Renode/Renode_NET.csproj" -d "$SRC_DIR/license-files"
 
 # Create renode.cmd
 New-Item -ItemType File -Path "$PREFIX\Library\bin\renode.cmd" -Force
 @"
 @echo off
-call %DOTNET_ROOT%\dotnet exec %CONDA_PREFIX%\Library\libexec\renode-cli\net$framework_version-windows\Renode.dll %*
+call %DOTNET_ROOT%\dotnet exec %CONDA_PREFIX%\Library\libexec\renode-cli\Release\Renode.dll %*
 "@ | Out-File -FilePath "$PREFIX\Library\bin\renode.cmd" -Encoding ascii
 
 # Install tests for post-install testing

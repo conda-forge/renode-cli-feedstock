@@ -13,16 +13,6 @@ find lib src tests -name "*.csproj" -exec sed -i -E "s/([>;])net6.0([<;])/\1net$
 # Remove obj and bin directories
 find . -name "obj" -o -name "bin" -type d -exec rm -rf {} +
 
-# Fix typo in Renode_NET.sln
-if [[ "${PKG_VERSION}" == "1.15.3" ]]; then
-    sed -i -E 's/ReleaseHeadless\|Any (.+) = Debug/ReleaseHeadless\|Any \1 = Release/' Renode_NET.sln
-    sed -i -E 's/GetBytes\(registers.Read\(offset\)\);/GetBytes((ushort)registers.Read(offset));/' src/Infrastructure/src/Emulator/Peripherals/Peripherals/Sensors/PAC1934.cs
-    sed -i -E 's/"System.Drawing.Common" Version="5.0.2"/"System.Drawing.Common" Version="5.0.3"/' lib/termsharp/TermSharp_NET.csproj lib/termsharp/xwt/Xwt.Gtk/Xwt.Gtk3_NET.csproj
-else
-    echo "Remove these patches from the script after 1.15.3"
-    exit 1
-fi
-
 # Renode computes its version based upon `git rev-parse --short=8 HEAD`
 sed -i -E "s/\`git rev-parse --short=8 HEAD\`/0/" ${SRC_DIR}/tools/building/createAssemblyInfo.sh
 
@@ -34,7 +24,10 @@ rm -f "${SRC_DIR}/src/Infrastructure/src/Emulator/Cores/translate*.cproj"
 
 # Build with dotnet
 mkdir -p "${SRC_DIR}/output/bin/Release/net${framework_version}"
-cp "${SRC_DIR}/src/Infrastructure/src/Emulator/Cores/${target_platform%%-*}-properties_NET.csproj" "${SRC_DIR}/output/properties.csproj"
+cp "${SRC_DIR}/src/Infrastructure/src/Emulator/Cores/${target_platform%%-*}-properties.csproj" "${SRC_DIR}/output/properties.csproj"
+
+# package Microsoft.AspNetCore.App.Ref not found
+sed -i -E "s#(  </packageSources>)#  <add key=\"nuget.org\" value=\"https://api.nuget.org/v3/index.json\" />\n\1#" ${SRC_DIR}/NuGet.Config
 
 dotnet build \
   -p:GUI_DISABLED=true \
@@ -51,7 +44,7 @@ cp "lib/resources/llvm/$LLVM_LIB$SHLIB_EXT" "${SRC_DIR}/output/bin/Release/libll
 # Install procedure
 mkdir -p ${PREFIX}/bin ${PREFIX}/libexec/${PKG_NAME} ${PREFIX}/share/${PKG_NAME}/{scripts,platforms,tools/sel4_extensions} ${SRC_DIR}/license-files
 
-cp -r ${SRC_DIR}/output/bin/Release/net${framework_version}/* ${PREFIX}/libexec/${PKG_NAME}/
+cp -r ${SRC_DIR}/output/bin/Release/* ${PREFIX}/libexec/${PKG_NAME}/
 cp -r ${SRC_DIR}/scripts/* "${PREFIX}/share/${PKG_NAME}/scripts/"
 cp -r ${SRC_DIR}/platforms/* "${PREFIX}/share/${PKG_NAME}/platforms/"
 cp -r ${SRC_DIR}/tools/sel4_extensions "${PREFIX}/share/${PKG_NAME}/tools/"
