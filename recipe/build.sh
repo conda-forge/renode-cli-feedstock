@@ -10,6 +10,9 @@ framework_version=${dotnet_version%.*}
 # Patch project files
 find lib src tests -name "*.csproj" -exec sed -i -E "s/([>;])net6.0([<;])/\1net${framework_version}\2/g" {} \;
 
+# Disable strong name signing (incompatible with OpenSSL 3.x on Linux)
+find lib src -name "*.csproj" -exec sed -i -E "s/<SignAssembly>true<\/SignAssembly>/<SignAssembly>false<\/SignAssembly>/g" {} \;
+
 # Remove obj and bin directories
 find . -name "obj" -o -name "bin" -type d -exec rm -rf {} +
 
