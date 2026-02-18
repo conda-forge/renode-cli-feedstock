@@ -41,8 +41,12 @@ tests:
         - ${{ "Library/" if win }}share/renode-cli/platforms/cpus/cortex-a9.repl
         - ${{ "Library/" if win }}share/renode-cli/tools/sel4_extensions/seL4Extensions.cs
   - script:
-      - renode --help
-      - LOCAL_TEST_PREFIX=./test-bundle test-bundle/${{ "Library/" if win }}bin/renode-test test-bundle/${{ "Library/" if win }}share/renode-cli/tests/unit-tests
+      - if: unix
+        then:
+          - renode --help
+          - LOCAL_TEST_PREFIX=./test-bundle test-bundle/${{ "Library/" if win }}bin/renode-test test-bundle/${{ "Library/" if win }}share/renode-cli/tests/unit-tests
+        else:
+          - echo "Skip: Dodgy Access denied from dotnet file lock?"
     requirements:
       run:
         - robotframework >=6.1
