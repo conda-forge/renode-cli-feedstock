@@ -34,6 +34,7 @@ requirements:
 
 tests:
   - package_contents:
+      strict: true
       bin:
         - renode
       files:
@@ -54,7 +55,7 @@ tests:
         - python
         - pyyaml >=6.0
     files:
-      source:
+      recipe:
         - test-bundle/
 
 about:
