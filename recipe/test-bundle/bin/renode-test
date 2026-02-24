@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-stty_config=$(stty -g 2>/dev/null)
-python3 "${LOCAL_TEST_PREFIX:-${CONDA_PREFIX}}"/share/"renode-cli"/tests/run_tests.py --robot-framework-remote-server-full-directory "/home/conda/feedstock_root/build_artifacts/bld/rattler-build_renode-cli_1771442852/build_env"/libexec/renode-cli "$@"
-result_code=$?
-if [[ -n "${stty_config+_}" ]]; then stty "$stty_config"; fi
-exit $result_code
