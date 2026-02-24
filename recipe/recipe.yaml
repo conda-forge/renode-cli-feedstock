@@ -38,15 +38,16 @@ tests:
       bin:
         - renode
       files:
+        - ${{ "Library/" if win }}libexec/renode-cli/OptionsParser.deps.json
+        - ${{ "Library/" if win }}libexec/renode-cli/OptionsParser.runtimeconfig.json
         - ${{ "Library/" if win }}libexec/renode-cli/Renode
         - ${{ "Library/" if win }}libexec/renode-cli/Renode.deps.json
         - ${{ "Library/" if win }}libexec/renode-cli/Renode.runtimeconfig.json
         - ${{ "Library/" if win }}libexec/renode-cli/Sprache.xml
         - ${{ "Library/" if win }}libexec/renode-cli/build_type
         - ${{ "Library/" if win }}libexec/renode-cli/*.{dll,pdb,so}
-        - ${{ "Library/" if win }}libexec/renode-cli/Lib/README.txt
         - ${{ "Library/" if win }}libexec/renode-cli/Lib/*.py
-        - ${{ "Library/" if win }}libexec/renode-cli/Lib/site-package/README.txt
+        - ${{ "Library/" if win }}libexec/renode-cli/Lib/site-packages/README.txt
         - ${{ "Library/" if win }}libexec/renode-cli/Lib/{ctypes,distutils,email,encodings,ensurepip}/*
         - ${{ "Library/" if win }}libexec/renode-cli/Lib/{lib2to3,multiprocessing,unittest,wsgiref,xml}/*
         - ${{ "Library/" if win }}libexec/renode-cli/{cs,de,es,fr,it,ja,ko,pl,ru,tr,zh-Hans,zh-Hant}/*.dll
