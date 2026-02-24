@@ -52,11 +52,11 @@ tests:
         - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}Lib/{lib2to3,multiprocessing,unittest,wsgiref,xml}/*
         - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}{cs,de,es,fr,it,ja,ko,pl,ru,tr,zh-Hans,zh-Hant}/*.dll
         - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}runtimes/*
-        - ${{ "Library/" if win }}share/renode-cli/${{ "Release/" if win }}platforms/{boards,cpus}/*.repl
-        - ${{ "Library/" if win }}share/renode-cli/${{ "Release/" if win }}scripts/monitor.py
-        - ${{ "Library/" if win }}share/renode-cli/${{ "Release/" if win }}scripts/{complex,multi-node,single-node}/*
-        - ${{ "Library/" if win }}share/renode-cli/${{ "Release/" if win }}scripts/pydev/*.py
-        - ${{ "Library/" if win }}share/renode-cli/${{ "Release/" if win }}tools/sel4_extensions/*
+        - ${{ "Library/" if win }}share/renode-cli/platforms/{boards,cpus}/*.repl
+        - ${{ "Library/" if win }}share/renode-cli/scripts/monitor.py
+        - ${{ "Library/" if win }}share/renode-cli/scripts/{complex,multi-node,single-node}/*
+        - ${{ "Library/" if win }}share/renode-cli/scripts/pydev/*.py
+        - ${{ "Library/" if win }}share/renode-cli/tools/sel4_extensions/*
         # Post-install tests
         - etc/conda/test-files/renode-cli/*
   - script:
