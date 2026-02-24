@@ -59,10 +59,10 @@ tests:
         - if: unix
           then:
             - libexec/renode-cli/runtimes/*
+            # Post-install tests
+            - etc/conda/test-files/renode-cli/*
           else:
             - ${{ "Library/" if not unix }}libexec/renode-cli/${{ "Release/" if not unix }}testhost${{ ".exe" if not unix }}
-        # Post-install tests
-        - etc/conda/test-files/renode-cli/*
   - script:
       - if: unix
         then:
