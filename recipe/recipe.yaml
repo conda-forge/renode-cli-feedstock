@@ -38,25 +38,25 @@ tests:
       bin:
         - renode
       files:
-        - ${{ "Library/" if win }}libexec/renode-cli/OptionsParser.deps.json
-        - ${{ "Library/" if win }}libexec/renode-cli/OptionsParser.runtimeconfig.json
-        - ${{ "Library/" if win }}libexec/renode-cli/Renode
-        - ${{ "Library/" if win }}libexec/renode-cli/Renode.deps.json
-        - ${{ "Library/" if win }}libexec/renode-cli/Renode.runtimeconfig.json
-        - ${{ "Library/" if win }}libexec/renode-cli/Sprache.xml
-        - ${{ "Library/" if win }}libexec/renode-cli/build_type
-        - ${{ "Library/" if win }}libexec/renode-cli/*.{dll,pdb,so}
-        - ${{ "Library/" if win }}libexec/renode-cli/Lib/*.py
-        - ${{ "Library/" if win }}libexec/renode-cli/Lib/site-packages/README.txt
-        - ${{ "Library/" if win }}libexec/renode-cli/Lib/{ctypes,distutils,email,encodings,ensurepip}/*
-        - ${{ "Library/" if win }}libexec/renode-cli/Lib/{lib2to3,multiprocessing,unittest,wsgiref,xml}/*
-        - ${{ "Library/" if win }}libexec/renode-cli/{cs,de,es,fr,it,ja,ko,pl,ru,tr,zh-Hans,zh-Hant}/*.dll
-        - ${{ "Library/" if win }}libexec/renode-cli/runtimes/*
-        - ${{ "Library/" if win }}share/renode-cli/platforms/{boards,cpus}/*.repl
-        - ${{ "Library/" if win }}share/renode-cli/scripts/monitor.py
-        - ${{ "Library/" if win }}share/renode-cli/scripts/{complex,multi-node,single-node}/*
-        - ${{ "Library/" if win }}share/renode-cli/scripts/pydev/*.py
-        - ${{ "Library/" if win }}share/renode-cli/tools/sel4_extensions/*
+        - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}${{ "Release/" if win }}OptionsParser.deps.json
+        - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}OptionsParser.runtimeconfig.json
+        - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}Renode
+        - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}Renode.deps.json
+        - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}Renode.runtimeconfig.json
+        - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}Sprache.xml
+        - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}build_type
+        - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}*.{dll,dylib,pdb,so}
+        - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}Lib/*.py
+        - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}Lib/site-packages/README.txt
+        - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}Lib/{ctypes,distutils,email,encodings,ensurepip}/*
+        - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}Lib/{lib2to3,multiprocessing,unittest,wsgiref,xml}/*
+        - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}{cs,de,es,fr,it,ja,ko,pl,ru,tr,zh-Hans,zh-Hant}/*.dll
+        - ${{ "Library/" if win }}libexec/renode-cli/${{ "Release/" if win }}runtimes/*
+        - ${{ "Library/" if win }}share/renode-cli/${{ "Release/" if win }}platforms/{boards,cpus}/*.repl
+        - ${{ "Library/" if win }}share/renode-cli/${{ "Release/" if win }}scripts/monitor.py
+        - ${{ "Library/" if win }}share/renode-cli/${{ "Release/" if win }}scripts/{complex,multi-node,single-node}/*
+        - ${{ "Library/" if win }}share/renode-cli/${{ "Release/" if win }}scripts/pydev/*.py
+        - ${{ "Library/" if win }}share/renode-cli/${{ "Release/" if win }}tools/sel4_extensions/*
         # Post-install tests
         - etc/conda/test-files/renode-cli/*
   - script:
