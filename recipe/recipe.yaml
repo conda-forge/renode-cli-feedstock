@@ -64,12 +64,8 @@ tests:
           else:
             - ${{ "Library/" if not unix }}libexec/renode-cli/${{ "Release/" if not unix }}testhost${{ ".exe" if not unix }}
   - script:
-      - if: unix
-        then:
-          - renode --help
-          - LOCAL_TEST_PREFIX=./test-bundle test-bundle/${{ "Library/" if not unix }}bin/renode-test test-bundle/${{ "Library/" if not unix }}share/renode-cli/tests/unit-tests
-        else:
-          - echo "Skip: Dodgy Access denied from dotnet file lock?"
+      - renode --help
+      - LOCAL_TEST_PREFIX=./test-bundle test-bundle/${{ "Library/" if not unix }}bin/renode-test test-bundle/${{ "Library/" if not unix }}share/renode-cli/tests/unit-tests
     requirements:
       run:
         - robotframework >=6.1
