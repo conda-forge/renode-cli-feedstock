@@ -89,12 +89,43 @@ if not "%STTY_CONFIG%"=="" stty "%STTY_CONFIG%"
 exit /b %RESULT_CODE%
 "@ | Out-File -FilePath "$TEST_PREFIX\Library\bin\renode-test.cmd" -Encoding ascii
 
-# Terminate the dotnet processes that may hang around and prevent the build environment from being removed
-try {
-    Get-Process -Name *dotnet* | Stop-Process
+# Terminate ALL .NET-related processes that may hang around and prevent the build environment from being removed
+Write-Host "Cleaning up .NET processes to prevent file lock issues..."
+
+$processPatterns = @('dotnet', 'MSBuild', 'VBCSCompiler', 'testhost', 'Renode')
+foreach ($pattern in $processPatterns) {
+    try {
+        $processes = Get-Process -Name $pattern -ErrorAction SilentlyContinue
+        if ($processes) {
+            Write-Host "Terminating $($processes.Count) process(es) matching '$pattern'"
+            $processes | Stop-Process -Force -ErrorAction SilentlyContinue
+        }
+    }
+    catch {
+        # Ignore - process may not be running
+    }
 }
-catch {
-    Write-Warning "Error removing the build environment: $_"
+
+# Wait for Windows to release file locks
+Write-Host "Waiting for file locks to release..."
+Start-Sleep -Seconds 3
+
+# Force cleanup of obj/bin directories that may be locked
+$dirsToClean = @(
+    "$SRC_DIR/src/*/obj",
+    "$SRC_DIR/src/*/bin",
+    "$SRC_DIR/output/obj"
+)
+foreach ($dir in $dirsToClean) {
+    if (Test-Path $dir) {
+        try {
+            Remove-Item -Path $dir -Recurse -Force -ErrorAction SilentlyContinue
+            Write-Host "Cleaned up: $dir"
+        }
+        catch {
+            Write-Warning "Could not clean: $dir - $_"
+        }
+    }
 }
 
 exit 0

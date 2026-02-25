@@ -34,6 +34,7 @@ dotnet build \
   -p:Configuration=ReleaseHeadless \
   -p:GenerateFullPaths=true \
   -p:Platform="Any CPU" \
+  -p:SignAssembly=false \
   ${SRC_DIR}/Renode_NET.sln
 echo -n "dotnet" > "${SRC_DIR}/output/bin/Release/build_type"
 
@@ -62,7 +63,7 @@ EOF
 chmod +x "${PREFIX}/bin/renode"
 
 # Install tests for post-install testing
-TEST_PREFIX="${SRC_DIR}/test-bundle"
+TEST_PREFIX="${RECIPE_DIR}/test-bundle"
 
 mkdir -p "${TEST_PREFIX}/bin"
 mkdir -p "${TEST_PREFIX}/share/${PKG_NAME}/tests"

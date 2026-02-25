@@ -1,6 +1,6 @@
 context:
   name: renode-cli
-  version: "1.16.0"
+  version: "1.16.1"
 
 package:
   name: ${{ name|lower }}
@@ -8,7 +8,7 @@ package:
 
 source:
   - url: https://github.com/renode/renode/releases/download/v${{ version }}/renode_${{ version }}_source.tar.xz
-    sha256: dab46e73d07a3b1bf2c1cec2c615a37ab85d734dda448296dcdf39c4f7c9451a
+    sha256: fefe9a495cb54af09f13a93a863b6cad027f7ddc8854921efa6e42d9fbcd9888
 
 build:
   number: 0
@@ -34,15 +34,38 @@ requirements:
 
 tests:
   - package_contents:
+      strict: true
       bin:
         - renode
       files:
-        - ${{ "Library/" if win }}share/renode-cli/scripts/monitor.py
-        - ${{ "Library/" if win }}share/renode-cli/platforms/cpus/cortex-a9.repl
-        - ${{ "Library/" if win }}share/renode-cli/tools/sel4_extensions/seL4Extensions.cs
+        - ${{ "Library/" if not unix }}libexec/renode-cli/${{ "Release/" if not unix }}OptionsParser.deps.json
+        - ${{ "Library/" if not unix }}libexec/renode-cli/${{ "Release/" if not unix }}OptionsParser.runtimeconfig.json
+        - ${{ "Library/" if not unix }}libexec/renode-cli/${{ "Release/" if not unix }}Renode${{ ".exe" if not unix }}
+        - ${{ "Library/" if not unix }}libexec/renode-cli/${{ "Release/" if not unix }}Renode.deps.json
+        - ${{ "Library/" if not unix }}libexec/renode-cli/${{ "Release/" if not unix }}Renode.runtimeconfig.json
+        - ${{ "Library/" if not unix }}libexec/renode-cli/${{ "Release/" if not unix }}Sprache.xml
+        - ${{ "Library/" if not unix }}libexec/renode-cli/${{ "Release/" if not unix }}build_type
+        - ${{ "Library/" if not unix }}libexec/renode-cli/${{ "Release/" if not unix }}*.{dll,dylib,pdb,so}
+        - ${{ "Library/" if not unix }}libexec/renode-cli/${{ "Release/" if not unix }}Lib/*.py
+        - ${{ "Library/" if not unix }}libexec/renode-cli/${{ "Release/" if not unix }}Lib/site-packages/README.txt
+        - ${{ "Library/" if not unix }}libexec/renode-cli/${{ "Release/" if not unix }}Lib/{ctypes,distutils,email,encodings,ensurepip}/*
+        - ${{ "Library/" if not unix }}libexec/renode-cli/${{ "Release/" if not unix }}Lib/{lib2to3,multiprocessing,unittest,wsgiref,xml}/*
+        - ${{ "Library/" if not unix }}libexec/renode-cli/${{ "Release/" if not unix }}{cs,de,es,fr,it,ja,ko,pl,ru,tr,zh-Hans,zh-Hant}/*.dll
+        - ${{ "Library/" if not unix }}share/renode-cli/platforms/{boards,cpus}/*.repl
+        - ${{ "Library/" if not unix }}share/renode-cli/scripts/monitor.py
+        - ${{ "Library/" if not unix }}share/renode-cli/scripts/{complex,multi-node,single-node}/*
+        - ${{ "Library/" if not unix }}share/renode-cli/scripts/pydev/*.py
+        - ${{ "Library/" if not unix }}share/renode-cli/tools/sel4_extensions/*
+        - if: unix
+          then:
+            - libexec/renode-cli/runtimes/*
+            # Post-install tests
+            - etc/conda/test-files/renode-cli/*
+          else:
+            - ${{ "Library/" if not unix }}libexec/renode-cli/${{ "Release/" if not unix }}testhost${{ ".exe" if not unix }}
   - script:
       - renode --help
-      - LOCAL_TEST_PREFIX=./test-bundle test-bundle/${{ "Library/" if win }}bin/renode-test test-bundle/${{ "Library/" if win }}share/renode-cli/tests/unit-tests
+      - LOCAL_TEST_PREFIX=./test-bundle test-bundle/${{ "Library/" if not unix }}bin/renode-test test-bundle/${{ "Library/" if not unix }}share/renode-cli/tests/unit-tests
     requirements:
       run:
         - robotframework >=6.1
@@ -50,7 +73,7 @@ tests:
         - python
         - pyyaml >=6.0
     files:
-      source:
+      recipe:
         - test-bundle/
 
 about:
