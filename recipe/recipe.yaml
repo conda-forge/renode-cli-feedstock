@@ -1,6 +1,6 @@
 context:
   name: renode-cli
-  version: "1.16.1"
+  version: "1.17.0"
 
 package:
   name: ${{ name|lower }}
@@ -8,7 +8,7 @@ package:
 
 source:
   - url: https://github.com/renode/renode/releases/download/v${{ version }}/renode_${{ version }}_source.tar.xz
-    sha256: fefe9a495cb54af09f13a93a863b6cad027f7ddc8854921efa6e42d9fbcd9888
+    sha256: 65170aa79966044704ddef274568ed8b6e78b9f08edde578de33befee28a1eee
 
 build:
   number: 0
